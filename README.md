@@ -1,5 +1,5 @@
 # Prova API
-
+Video Explicatiu del codi modificat: https://www.youtube.com/watch?v=4n81LkH9bXw Referencies: codi grup api y chatGPT
 ## Descripció
 Una API bàsica desenvolupada en Node.js amb TypeScript, utilitzant Express i Mongoose per a la gestió de dades en MongoDB. A més, s'inclou documentació amb Swagger.
 
