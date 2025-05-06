@@ -9,7 +9,6 @@ import { loggingHandler } from './middleware/loggingHandler.js';
 import { routeNotFound } from './middleware/routeNotFound.js';
 import swaggerUi from 'swagger-ui-express';
 import swaggerJSDoc from 'swagger-jsdoc';
-import { ensureDefaultUser } from './modules/users/user_service.js';
 
 dotenv.config(); // Cargamos las variables de entorno desde el archivo .env
 
@@ -70,12 +69,11 @@ app.get('/', (req, res) => {
     res.send('Welcome to my API');
 });
 
-ensureDefaultUser();
 
 // Conexión a MongoDB
 //mongoose;
 mongoose
-    .connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/backEndReact')
+    .connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/seminariAPI')
     .then(() => console.log('Connected to DB'))
     .catch((error) => console.error('DB Connection Error:', error));
 

@@ -1,13 +1,13 @@
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
+    _id: {
+        type: String,
+        default: () => new mongoose.Types.ObjectId().toString()
+    },
     name :{
         type: String,
         required : true
-    },
-    password : {
-        type: String,
-        required : false
     },
     age: {
         type: Number,
@@ -16,21 +16,20 @@ const userSchema = new mongoose.Schema({
     email: {
         type : String,
         required : true,
-        unique: true
+        unique : true
     },
-    phone: {
-        type: Number,
-        required : false
-    },
-
+    password: {
+        type : String,
+        required : true
+    }
 });
 
 export interface IUser{
-    name: string;
-    password?: string;
-    age?: number;
-    email: string;
-    phone?: number;
+    _id?: string;
+    name : string;
+    age : number;
+    email : string;
+    password: string;
 
 }
 

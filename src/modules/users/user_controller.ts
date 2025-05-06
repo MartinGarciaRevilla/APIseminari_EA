@@ -1,5 +1,5 @@
 // src/controllers/user_controller.ts
-import { saveMethod, createUser, getAllUsers, getUserById, updateUser, deleteUser, logIn } from '../users/user_service.js';
+import { saveMethod, createUser, getAllUsers, getUserById, updateUser, deleteUser, loginUser } from '../users/user_service.js';
 
 import express, { Request, Response } from 'express';
 
@@ -14,15 +14,16 @@ export const saveMethodHandler = async (req: Request, res: Response) => {
 export const createUserHandler = async (req: Request, res: Response) => {
     try {
         const data = await createUser(req.body);
-        res.json(data);
+        res.status(201).json(data); // El campo _id se incluirá automáticamente
     } catch (error: any) {
+        console.error("Error en createUserHandler:", error);
         res.status(500).json({ message: error.message });
     }
 };
 export const getAllUsersHandler = async (req: Request, res: Response) => {
     try {
-        const data = await getAllUsers();
-        res.json(data);
+        const users = await getAllUsers();
+        res.status(200).json(users); // El campo _id se incluirá automáticamente
     } catch (error: any) {
         res.status(500).json({ message: error.message });
     }
@@ -51,12 +52,27 @@ export const deleteUserHandler = async (req: Request, res: Response) => {
         res.status(500).json({ message: error.message });
     }
 };
-export const logInHandler = async (req: Request, res: Response) => {
+export const loginUserHandler = async (req: Request, res: Response) => {
     try {
         const { email, password } = req.body;
-        const user = await logIn(email, password);
-        res.status(200).json(user);
+
+        // Validar que se envíen las credenciales
+        if (!email || !password) {
+            return res.status(400).json({ message: "Es necesario proporcionar email y contraseña" });
+        }
+
+        // Llamar al servicio de login
+        const user = await loginUser(email, password);
+
+        // Devolver los datos del usuario logueado
+        res.status(200).json({
+            _id: user.id, // Cambiar a _id
+            name: user.name,
+            email: user.email,
+            age: user.age, // Asegúrate de incluir la edad
+        });
     } catch (error: any) {
-        res.status(500).json({ message: error.message });
+        console.error("Error en loginUserHandler:", error);
+        res.status(401).json({ message: error.message });
     }
 };
